@@ -23,7 +23,7 @@ class ActionsFactory {
     for (a in actions) {
       if (actions.hasOwnProperty(a)) {
         action = new Action(actions[a], dispatcher);
-        _actions[a] = action.dispatch.bind(action);
+        _actions[a] = action.callback.bind(action);
       }
     }
     assign(this, _actions);
