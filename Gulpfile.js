@@ -17,7 +17,7 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('lib', ['clean'], function() {
-  return gulp.src('src/*.js')
+  return gulp.src(['src/**/*.js','!src/__tests__/*'])
              .pipe(babel())
              .pipe(gulp.dest('lib'))
 

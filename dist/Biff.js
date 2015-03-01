@@ -91,7 +91,7 @@ function ActionsFactory(actions, dispatcher) {
 };
 
 module.exports = ActionsFactory;
-},{"./Action":2,"object-assign":10}],4:[function(require,module,exports){
+},{"./Action":2,"object-assign":11}],4:[function(require,module,exports){
 "use strict";
 
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
@@ -169,7 +169,7 @@ var Biff = (function () {
 })();
 
 module.exports = Biff;
-},{"./ActionsFactory":3,"./Store":5,"flux":7,"object-assign":10}],5:[function(require,module,exports){
+},{"./ActionsFactory":3,"./Store":5,"flux":8,"object-assign":11}],5:[function(require,module,exports){
 "use strict";
 
 var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
@@ -178,8 +178,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
 var EventEmitter = require("events").EventEmitter;
 var assign = require("object-assign");
-var SimpleConsole = require("simple-console");
-var con = "production" === "production" ? new SimpleConsole(null) : new SimpleConsole();
+var con = require("./util/console");
 
 /**
  * Store class
@@ -330,7 +329,12 @@ var Store = (function () {
 })();
 
 module.exports = Store;
-},{"events":6,"object-assign":10,"simple-console":11}],6:[function(require,module,exports){
+},{"./util/console":6,"events":7,"object-assign":11}],6:[function(require,module,exports){
+"use strict";
+
+var SimpleConsole = require("simple-console");
+module.exports = "production" === "production" ? new SimpleConsole(null) : new SimpleConsole();
+},{"simple-console":12}],7:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -633,7 +637,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -645,7 +649,7 @@ function isUndefined(arg) {
 
 module.exports.Dispatcher = require('./lib/Dispatcher')
 
-},{"./lib/Dispatcher":8}],8:[function(require,module,exports){
+},{"./lib/Dispatcher":9}],9:[function(require,module,exports){
 /*
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -897,7 +901,7 @@ var _prefix = 'ID_';
 
 module.exports = Dispatcher;
 
-},{"./invariant":9}],9:[function(require,module,exports){
+},{"./invariant":10}],10:[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.
@@ -952,7 +956,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -991,7 +995,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*!
  * simple-console
  * --------------

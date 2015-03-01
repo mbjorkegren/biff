@@ -2,10 +2,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var SimpleConsole = require('simple-console');
-var con = process.env.NODE_ENV === 'production' ?
-  new SimpleConsole(null) :
-  new SimpleConsole();
+var con = require('./util/console');
 
 /**
  * Store class
