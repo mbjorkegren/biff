@@ -3,54 +3,26 @@ module.exports = require('./lib/Biff');
 },{"./lib/Biff":4}],2:[function(require,module,exports){
 "use strict";
 
-var _prototypeProperties = function (child, staticProps, instanceProps) { if (staticProps) Object.defineProperties(child, staticProps); if (instanceProps) Object.defineProperties(child.prototype, instanceProps); };
-
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
 /**
  * Action class
  */
 
-var Action = (function () {
+var Action =
 
-  /**
-   * Constructs an Action object
-   *
-   * @param {function} callback - Callback method for Action
-   * @constructor
-   */
+/**
+ * Constructs an Action object
+ *
+ * @param {function} callback - Callback method for Action
+ * @constructor
+ */
+function Action(callback, dispatcher) {
+  _classCallCheck(this, Action);
 
-  function Action(callback, dispatcher) {
-    _classCallCheck(this, Action);
-
-    this.callback = callback;
-    this.dispatcher = dispatcher;
-  }
-
-  _prototypeProperties(Action, null, {
-    dispatch: {
-
-      /**
-       * Calls callback method from Dispatcher
-       *
-       * @param {...*} arguments - arguments for callback method
-       * @constructor
-       */
-
-      value: function dispatch() {
-        var payload = this.callback.apply(this, arguments);
-        if ("production" !== "production" && !payload.actionType) {
-          throw new Error("Invariant Violation: Payload object requires an actionType property");
-        }
-        this.dispatcher.dispatch(payload);
-      },
-      writable: true,
-      configurable: true
-    }
-  });
-
-  return Action;
-})();
+  this.callback = callback;
+  this.dispatch = dispatcher.dispatch.bind(dispatcher);
+};
 
 module.exports = Action;
 },{}],3:[function(require,module,exports){
@@ -84,7 +56,7 @@ function ActionsFactory(actions, dispatcher) {
   for (a in actions) {
     if (actions.hasOwnProperty(a)) {
       action = new Action(actions[a], dispatcher);
-      _actions[a] = action.dispatch.bind(action);
+      _actions[a] = action.callback.bind(action);
     }
   }
   assign(this, _actions);

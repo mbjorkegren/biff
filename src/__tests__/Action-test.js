@@ -22,41 +22,10 @@ describe('Action', function() {
 
   });
 
-  it('should throw if actionType isn\'t supplied', function(){
+  it('should attach the dispatcher.dispatch method to the instance', function() {
 
-    callback = function(argument) {
-      return{
-        test: argument
-      };
-    };
+    expect(mockAction.dispatch).toBeDefined;
 
-    mockAction = new Action(callback,dispatcher);
-
-    expect(function() {
-      mockAction.dispatch("test");
-    }).toThrow();
-
-  });
-
-  it('should not throw if actionType IS supplied', function(){
-
-    callback = function(argument) {
-      return{
-        actionType: 'TEST_ACTION',
-        test: argument
-      };
-    };
-
-    mockAction = new Action(callback,dispatcher);
-
-    expect(function() {
-      mockAction.dispatch("test");
-    }).not.toThrow();
-
-  });
-
-  it('should have dispatched the supplied payload', function(){
-      expect(mockAction.dispatcher.dispatch.mock.calls.length).toEqual(1);
   });
 
 });
