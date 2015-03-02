@@ -1,2 +1,4 @@
 var SimpleConsole = require('simple-console');
-module.exports = process.env.NODE_ENV === "production" ? new SimpleConsole(null) : new SimpleConsole();
+module.exports = new SimpleConsole({
+  noop: process.env.NODE_ENV === "production"
+});
