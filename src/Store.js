@@ -2,7 +2,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var iv = require('invariant');
+var con = require('./util/console');
 
 /**
  * Store class
@@ -20,14 +20,17 @@ class Store {
   constructor(methods, callback) {
     var self = this;
     this.callback = callback;
-    iv(!methods.callback, '"callback" is a reserved name and cannot be used as a method name.');
-    iv(!methods.mixin, '"mixin" is a reserved name and cannot be used as a method name.');
+    if (process.env.NODE_ENV !== 'production' && methods.callback) {
+      throw new Error('Invariant Violation: "callback" is a reserved name and cannot be used as a method name.');
+    }
+    if (process.env.NODE_ENV !== 'production' && methods.mixin) {
+      throw new Error('Invariant Violation: "mixin" is a reserved name and cannot be used as a method name.');
+    }
     assign(this, EventEmitter.prototype, methods);
     this.mixin = {
       componentDidMount: function () {
-        var warn = (console.warn || console.log).bind(console);
         if (!this.storeDidChange) {
-          warn('A change handler is missing from a component with a Biff mixin. Notifications from Stores are not being handled.');
+          con.warn('A change handler is missing from a component with a Biff mixin. Notifications from Stores are not being handled.');
         }
         this.listener = ()=> { this.isMounted() && this.storeDidChange(); }
         this.errorListener = ()=> { this.isMounted() && this.storeError && this.storeError(); }

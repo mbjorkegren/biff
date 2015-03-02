@@ -1,5 +1,3 @@
-var invariant = require('invariant');
-
 /**
  * Action class
  */
@@ -24,7 +22,9 @@ class Action {
    */
   dispatch() {
     var payload = this.callback.apply(this, arguments);
-    invariant(payload.actionType, 'Payload object requires an actionType property');
+    if (process.env.NODE_ENV !== 'production' && !payload.actionType) {
+      throw new Error('Invariant Violation: Payload object requires an actionType property');
+    }
     this.dispatcher.dispatch(payload);
   }
 }

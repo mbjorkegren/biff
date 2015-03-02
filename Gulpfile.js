@@ -1,12 +1,14 @@
 var gulp = require('gulp');
+var path = require('path');
 var browserify = require('browserify');
+var envify = require('envify/custom');
 var source = require('vinyl-source-stream');
 var del = require('del');
 var jscs = require('gulp-jscs-custom');
 var babel = require('gulp-babel');
 
 var browserifyConfig = {
-  entries: ['./index.js'],
+  entries: [path.join(__dirname, 'index.js')],
   standalone: 'Biff'
 };
 
@@ -15,7 +17,7 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('lib', ['clean'], function() {
-  return gulp.src('src/*.js')
+  return gulp.src(['src/**/*.js','!src/__tests__/*'])
              .pipe(babel())
              .pipe(gulp.dest('lib'))
 
@@ -23,6 +25,7 @@ gulp.task('lib', ['clean'], function() {
 
 gulp.task('browserify', ['lib'], function() {
   return browserify(browserifyConfig)
+          .transform(envify({NODE_ENV: "production"}))
           .bundle()
           .pipe(source('Biff.js'))
           .pipe(gulp.dest('./dist/'))
