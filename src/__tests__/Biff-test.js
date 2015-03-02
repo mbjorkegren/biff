@@ -3,6 +3,7 @@
 jest.dontMock('../Biff');
 jest.dontMock('../Store');
 jest.dontMock('../ActionsFactory');
+jest.dontMock('../Action');
 jest.dontMock('object-assign');
 
 describe('Biff', function() {
@@ -44,10 +45,10 @@ describe('Biff', function() {
 
     mockActionsFactory = Biff.createActions({
       testMethod: function(test) {
-        return {
+        this.dispatch({
           actionType: 'TEST_ADD',
           data: test
-        }
+        });
       }
     });
 

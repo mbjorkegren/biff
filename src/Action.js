@@ -13,19 +13,7 @@ class Action {
    */
   constructor(callback, dispatcher) {
     this.callback = callback;
-    this.dispatcher = dispatcher;
-  }
-
-  /**
-   * Calls callback method from Dispatcher
-   *
-   * @param {...*} arguments - arguments for callback method
-   * @constructor
-   */
-  dispatch() {
-    var payload = this.callback.apply(this, arguments);
-    invariant(payload.actionType, 'Payload object requires an actionType property');
-    this.dispatcher.dispatch(payload);
+    this.dispatch = dispatcher.dispatch.bind(dispatcher);
   }
 }
 
