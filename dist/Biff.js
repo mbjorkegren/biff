@@ -191,8 +191,8 @@ var Store = (function () {
         this.listener = function () {
           _this.isMounted() && _this.storeDidChange();
         };
-        this.errorListener = function () {
-          _this.isMounted() && _this.storeError && _this.storeError();
+        this.errorListener = function (event) {
+          _this.isMounted() && _this.storeError && _this.storeError.call(_this, event);
         };
         self.addChangeListener(this.listener);
         self.addErrorListener(this.errorListener);
