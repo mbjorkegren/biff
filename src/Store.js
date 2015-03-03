@@ -56,7 +56,6 @@ class Store {
   /**
    * Returns a Store's "pending" state
    */
-
   getPending() {
     return this.pending;
   }
@@ -64,15 +63,13 @@ class Store {
   /**
    * Sets a Store's "pending" state
    */
-
-  setPending(pending) {
+  _setPending(pending) {
     this.pending = pending;
   }
 
   /**
    * Returns a Store's "errors" array
    */
-
   getErrors() {
     return this.errors;
   }
@@ -80,16 +77,14 @@ class Store {
   /**
    * Adds an error to a Store's "errors" array
    */
-
-  setError(error) {
+  _setError(error) {
     this.errors.push(error);
   }
 
   /**
    * Clears a Store's "errors" array
    */
-
-  clearErrors(error) {
+  _clearErrors(error) {
     this.errors.splice(0, this.errors.length);
   }
 
