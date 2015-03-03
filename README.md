@@ -11,18 +11,33 @@ Biff is a library that provides all 3 components of Flux architecture, using Fac
 
 Check out this JSFiddle Demo to see how Biff can work for you:
 
-[http://jsfiddle.net/6rauuetb/](http://jsfiddle.net/6rauuetb/)
+[http://jsfiddle.net/2xtqx3u3/](http://jsfiddle.net/2xtqx3u3/)
 
-###Dispatcher
+###Getting Started
 
-Biff uses Facebook Flux's dispatcher. When Biff is instantiated, and a single dispatcher instance is created and can be accessed like shown below:
+The first step to using Biff is to create a new instance of Biff.
+
+####Standalone
 
 ```javascript
-var Biff = new Biff();
-
-return Biff.dispatcher;
+var biff = new Biff();
 ```
+
+####Modular
+```javascript
+var Biff = require('biff');
+module.exports = new Biff();
+```
+
+Each instance of Biff has its own Dispatcher instance created and attached.
+
 In fact, all created Actions & Stores are also stored on the Biff object as `actions` and `stores` respectively.
+
+```javascript
+biff.dispatcher // Dispatcher instance
+biff.actions // Array of actions
+biff.stores // Array of stores
+```
 
 ###Stores
 
@@ -33,13 +48,17 @@ When a store is created, its methods parameter specified what public methods sho
 Creating a store with Biff looks like this:
 
 ```javascript
+// Require the Biff instance you created
+var biff = require('./biff');
+
+// Internal data object
 var _todos = [];
 
 function addTodo(text) {
   _todos.push(text);
 }
 
-var TodoStore = Biff.createStore({
+var TodoStore = biff.createStore({
 
 getTodos: function() {
   return _todos;
@@ -50,12 +69,11 @@ getTodos: function() {
   switch(payload.actionType) {
   case 'ADD_TODO':
     addTodo(payload.text);
+    this.emitChange();
   break;
   default:
     return true;
   }
-
-  TodoStore.emitChange();
 
   return true;
 
@@ -65,9 +83,10 @@ getTodos: function() {
 Use `Dispatcher.waitFor` if you need to ensure handlers from other stores run first.
 
 ```javascript
-var Biff = new Biff();
+var biff = require('./biff');
 var Dispatcher = Biff.dispatcher;
 var OtherStore = require('../stores/OtherStore');
+
 var _todos = [];
 
 function addTodo(text, someValue) {
@@ -95,42 +114,114 @@ var TodoStore = require('../stores/TodoStore');
 var TodoApp = React.createClass({
 
   mixins: [TodoStore.mixin],
+  storeDidChange: function () {
+    // Handle store change here
+  }
 
   ...
 ```
+Stores in Biff also have helpers for managing the state of the store's data. Each Biff instance has `_pending` and `_errors` properties. These are exposed via getters and setters. These methods are:
+
+- getPending() - Returns store pending state
+- getErrors() - Returns store errors array
+- _setPending(arg) - Sets store pending state
+- _setError(arg) - Adds an error to the store errors array
+- _clearErrors() - Clears store errors array
+
+Below, see an example of how they can be used:
+
+```javascript
+// In Your Store
+
+var TodoStore = biff.createStore({
+    getTodos: function() {
+      return _todos;
+    }
+
+}, function(payload){
+
+  switch(payload.actionType) {
+    case 'ADD_START':
+      this._setPending(true);
+    break;
+
+    case 'ADD_SUCCESS':
+       this._setPending(false);
+      addTodo(payload.text);
+      this._clearErrors();
+      this.emitChange();
+    break;
+
+    case 'ADD_ERROR':
+      this._setPending(false);
+      this._setError(payload.error);
+      this.emitChange();
+    break;
+
+    default:
+      return true;
+  }
+
+  return true;
+
+});
+
+// In your component
+
+function getState(){
+  return {
+    errors: TodoStore.getErrors()
+    pending: TodoStore.getPending()
+    todos: TodoStore.getTodos()
+  }
+}
+
+var TodoApp = React.createClass({
+  mixins: [TodoStore.mixin],
+  getInitialState: function () {
+    return getState();
+  },
+  storeDidChange: function () {
+    this.setState(getState());
+  }
+  ...
+
+```
+
+
 ###Actions
 
-Biff's **createActions** method creates an Action Creator object with the supplied singleton object. The supplied methods are inserted into a Dispatcher.dispatch call and returned with their original name, so that when you call these methods, the dispatch takes place automatically.
+Biff's **createActions** method creates an Action Creator object with the supplied singleton object. The methods of the supplied object are given an instance of the Biff instance's dispatcher object so that you can make dispatch calls from them. It is available via `this.dispatch` in the interior of your methods.
 
 Adding actions to your app looks like this:
 
 ```javascript
-var Biff = require('../controller/Biff');
+var biff = require('../biff');
 
-var TodoActions = Biff.createActions({
+var TodoActions = biff.createActions({
   addTodo: function(text) {
-    return {
+    this.dispatch({
       actionType: 'ADD_TODO',
       text: text
-    }
+    });
   }
 });
 ```
 
-All actions methods return promise objects so that components can respond to long functions. The promise will be resolved with no parameters as information should travel through the dispatcher and stores. To reject the promise, return a falsy value from the action's method. The dispatcher will not be called if the returned value is falsy or has no actionType.
+### Async In Biff
 
-You can see an example of how to use this functionality here:
+Check out the example below to show you can handle async in Biff:
 
-http://jsfiddle.net/thekenwheeler/32hgqsxt/
+http://jsfiddle.net/29L0anf1/
 
 ## API
 
 ###Biff
 
 ```javascript
-var Biff = require('Biff');
+var Biff = require('biff');
 
-var Biff = new Biff();
+module.exports = new Biff();
 ```
 
 ### createStore
