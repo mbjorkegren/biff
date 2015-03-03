@@ -120,6 +120,25 @@ var TodoApp = React.createClass({
 
   ...
 ```
+This mixin also adds listeners that call a **storeError** component method, so that if you call `this.emitError('Error Messaging')` in your store, you can respond and handle this in your components:
+
+```javascript
+var TodoStore = require('../stores/TodoStore');
+
+var TodoApp = React.createClass({
+
+  mixins: [TodoStore.mixin],
+  storeError: function (error) {
+    console.log(error);
+  }
+
+  ...
+```
+
+A simple example of how this works can be seen here:
+
+[http://jsfiddle.net/p6q8ghpc/](http://jsfiddle.net/p6q8ghpc/)
+
 Stores in Biff also have helpers for managing the state of the store's data. Each Biff instance has `_pending` and `_errors` properties. These are exposed via getters and setters. These methods are:
 
 - getPending() - Returns store pending state
