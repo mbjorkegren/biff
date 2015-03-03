@@ -171,7 +171,7 @@ var Store = (function () {
     _classCallCheck(this, Store);
 
     var self = this;
-    this.callback = callback;
+    this.callback = callback.bind(this);
     this._pending = false;
     this._errors = [];
     if ("production" !== "production" && methods.callback) {

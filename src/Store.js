@@ -19,7 +19,7 @@ class Store {
    */
   constructor(methods, callback) {
     var self = this;
-    this.callback = callback;
+    this.callback = callback.bind(this);
     this._pending = false;
     this._errors = [];
     if (process.env.NODE_ENV !== 'production' && methods.callback) {
