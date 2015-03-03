@@ -172,6 +172,8 @@ var Store = (function () {
 
     var self = this;
     this.callback = callback;
+    this._pending = false;
+    this._errors = [];
     if ("production" !== "production" && methods.callback) {
       throw new Error("Invariant Violation: \"callback\" is a reserved name and cannot be used as a method name.");
     }
@@ -211,6 +213,66 @@ var Store = (function () {
 
       value: function getDispatchToken() {
         return this.dispatcherID;
+      },
+      writable: true,
+      configurable: true
+    },
+    getPending: {
+
+      /**
+       * Returns a Store's "pending" state
+       */
+
+      value: function getPending() {
+        return this._pending;
+      },
+      writable: true,
+      configurable: true
+    },
+    _setPending: {
+
+      /**
+       * Sets a Store's "pending" state
+       */
+
+      value: function _setPending(pending) {
+        this._pending = pending;
+      },
+      writable: true,
+      configurable: true
+    },
+    getErrors: {
+
+      /**
+       * Returns a Store's "errors" array
+       */
+
+      value: function getErrors() {
+        return this._errors;
+      },
+      writable: true,
+      configurable: true
+    },
+    _setError: {
+
+      /**
+       * Adds an error to a Store's "errors" array
+       */
+
+      value: function _setError(error) {
+        this._errors.push(error);
+      },
+      writable: true,
+      configurable: true
+    },
+    _clearErrors: {
+
+      /**
+       * Clears a Store's "errors" array
+       */
+
+      value: function _clearErrors(error) {
+        this._errors.splice(0, this.errors.length);
       },
       writable: true,
       configurable: true
