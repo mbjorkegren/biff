@@ -20,8 +20,8 @@ class Store {
   constructor(methods, callback) {
     var self = this;
     this.callback = callback;
-    this.__pending = false;
-    this.__errors = [];
+    this._pending = false;
+    this._errors = [];
     if (process.env.NODE_ENV !== 'production' && methods.callback) {
       throw new Error('Invariant Violation: "callback" is a reserved name and cannot be used as a method name.');
     }
@@ -57,35 +57,35 @@ class Store {
    * Returns a Store's "pending" state
    */
   getPending() {
-    return this.__pending;
+    return this._pending;
   }
 
   /**
    * Sets a Store's "pending" state
    */
   _setPending(pending) {
-    this.__pending = pending;
+    this._pending = pending;
   }
 
   /**
    * Returns a Store's "errors" array
    */
   getErrors() {
-    return this.__errors;
+    return this._errors;
   }
 
   /**
    * Adds an error to a Store's "errors" array
    */
   _setError(error) {
-    this.__errors.push(error);
+    this._errors.push(error);
   }
 
   /**
    * Clears a Store's "errors" array
    */
   _clearErrors(error) {
-    this.__errors.splice(0, this.errors.length);
+    this._errors.splice(0, this.errors.length);
   }
 
   /**
