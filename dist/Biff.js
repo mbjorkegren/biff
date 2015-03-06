@@ -188,11 +188,11 @@ var Store = (function () {
         if (!this.storeDidChange) {
           con.warn("A change handler is missing from a component with a Biff mixin. Notifications from Stores are not being handled.");
         }
-        this.listener = function () {
-          _this.isMounted() && _this.storeDidChange();
+        this.listener = function (data) {
+          _this.isMounted() && _this.storeDidChange.apply(_this, data);
         };
-        this.errorListener = function (event) {
-          _this.isMounted() && _this.storeError && _this.storeError.call(_this, event);
+        this.errorListener = function (data) {
+          _this.isMounted() && _this.storeError && _this.storeError.apply(_this, data);
         };
         self.addChangeListener(this.listener);
         self.addErrorListener(this.errorListener);
@@ -284,7 +284,7 @@ var Store = (function () {
        */
 
       value: function emitChange() {
-        this.emit("change");
+        this.emit("change", arguments[0]);
       },
       writable: true,
       configurable: true
@@ -296,7 +296,7 @@ var Store = (function () {
        */
 
       value: function emitError() {
-        this.emit("error", arguments);
+        this.emit("error", arguments[0]);
       },
       writable: true,
       configurable: true
