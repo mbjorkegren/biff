@@ -34,8 +34,8 @@ class Store {
         if (!this.storeDidChange) {
           con.warn('A change handler is missing from a component with a Biff mixin. Notifications from Stores are not being handled.');
         }
-        this.listener = (data)=> { this.isMounted() && this.storeDidChange.apply(this, data); }
-        this.errorListener = (data)=> { this.isMounted() && this.storeError && this.storeError.apply(this, data); }
+        this.listener = (data)=> { this.isMounted() && this.storeDidChange(data); }
+        this.errorListener = (data)=> { this.isMounted() && this.storeError && this.storeError(data); }
         self.addChangeListener(this.listener);
         self.addErrorListener(this.errorListener);
       },
