@@ -85,7 +85,7 @@ class Store {
    * Clears a Store's "errors" array
    */
   _clearErrors(error) {
-    this._errors.splice(0, this.errors.length);
+    this._errors.splice(0, this._errors.length);
   }
 
   /**
