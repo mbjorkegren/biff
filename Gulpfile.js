@@ -36,4 +36,4 @@ gulp.task('jscs', function(){
       .pipe(jscs({esnext: true}))
 });
 
-gulp.task('default', ['jscs', 'clean', 'lib', 'browserify']);
+gulp.task('default', ['clean', 'lib', 'browserify']);

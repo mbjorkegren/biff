@@ -3,6 +3,7 @@
 var Dispatcher = require('flux').Dispatcher;
 var Store = require('./Store');
 var ActionsFactory = require('./ActionsFactory');
+var FluxComponent = require('./FluxComponent');
 var assign = require('object-assign');
 
 /**
@@ -20,6 +21,7 @@ class Biff {
     this.actions = {};
     this.stores = [];
     this.dispatcher = new Dispatcher();
+    this.connect = FluxComponent;
   }
 
   /**
