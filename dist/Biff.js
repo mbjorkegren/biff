@@ -146,17 +146,12 @@ module.exports = Biff;
 },{"./ActionsFactory":3,"./FluxComponent":5,"./Store":6,"flux":10,"object-assign":13}],5:[function(require,module,exports){
 "use strict";
 
-var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-module.exports = FluxComponent;
+var React = require("react");
+var shallowEqual = require("react/lib/shallowEqual");
 
-var React = _interopRequire(require("react"));
-
-var shallowEqual = _interopRequire(require("react/lib/shallowEqual"));
-
-function FluxComponent(Component, stores, storeDidChange) {
+module.exports = function FluxComponent(Component, stores, storeDidChange) {
   var FluxComponent = React.createClass({
     displayName: "FluxComponent",
 
@@ -202,7 +197,7 @@ function FluxComponent(Component, stores, storeDidChange) {
     }
   });
   return FluxComponent;
-}
+};
 },{"react":168,"react/lib/shallowEqual":163}],6:[function(require,module,exports){
 "use strict";
 
@@ -213,6 +208,16 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 var EventEmitter = require("events").EventEmitter;
 var assign = require("object-assign");
 var con = require("./util/console");
+
+function withErrorLogging(f) {
+  return function () {
+    try {
+      f.apply(this, arguments);
+    } catch (e) {
+      con.error(e.stack);
+    }
+  };
+};
 
 /**
  * Store class
@@ -233,7 +238,7 @@ var Store = (function () {
     _classCallCheck(this, Store);
 
     var self = this;
-    this.callback = callback.bind(this);
+    this.callback = withErrorLogging(callback).bind(this);
     this._pending = false;
     this._errors = [];
     if ("production" !== "production" && methods.callback) {
