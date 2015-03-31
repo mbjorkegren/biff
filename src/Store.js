@@ -4,6 +4,16 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var con = require('./util/console');
 
+function withErrorLogging(f) {
+  return function() {
+    try {
+      f.apply(this, arguments);
+    } catch(e) {
+      con.error(e.stack);
+    }
+  };
+};
+
 /**
  * Store class
  */
@@ -19,7 +29,7 @@ class Store {
    */
   constructor(methods, callback) {
     var self = this;
-    this.callback = callback.bind(this);
+    this.callback = withErrorLogging(callback).bind(this);
     this._pending = false;
     this._errors = [];
     if (process.env.NODE_ENV !== 'production' && methods.callback) {
