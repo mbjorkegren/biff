@@ -2,7 +2,6 @@
 
 jest.dontMock('../Store');
 jest.dontMock('object-assign');
-jest.dontMock('invariant');
 
 describe('Store', function() {
 

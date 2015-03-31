@@ -1,9 +1,9 @@
 'use strict';
 
-import React from 'react';
-import shallowEqual from 'react/lib/shallowEqual';
+var React = require('react');
+var shallowEqual = require('react/lib/shallowEqual');
 
-export default function FluxComponent(Component, stores, storeDidChange) {
+module.exports = function FluxComponent(Component, stores, storeDidChange) {
   const FluxComponent = React.createClass({
     getState(props) {
       return storeDidChange(props);
