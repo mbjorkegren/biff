@@ -39,6 +39,7 @@ class Store {
       throw new Error('Invariant Violation: "mixin" is a reserved name and cannot be used as a method name.');
     }
     assign(this, EventEmitter.prototype, methods);
+    this.setMaxListeners(0);
     this.mixin = {
       componentDidMount: function () {
         if (!this.storeDidChange) {
