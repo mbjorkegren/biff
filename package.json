@@ -32,7 +32,7 @@
     "events": "^1.0.2",
     "flux": "^2.0.1",
     "object-assign": "^1.0.0",
-    "simple-console": "^0.1.0"
+    "simple-console": "^0.1.1"
   },
   "devDependencies": {
     "browserify": "^5.9.1",

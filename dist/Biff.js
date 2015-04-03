@@ -20827,7 +20827,11 @@ module.exports = require('./lib/React');
  * --------------
  * A small, cross-browser-friendly `console` wrapper.
  */
-(function (root) {
+(function () {
+  /*eslint-disable consistent-this*/
+  var root = this;
+  /*eslint-enable consistent-this*/
+
   // Patches
   var EMPTY_OBJ = {};
   var NOOP = function () {};
@@ -20873,7 +20877,7 @@ module.exports = require('./lib/React');
     var target = {};
     if (opts.patch) {
       // Ensure that `window.console` is actually created, and set as target.
-      target = window.console = window.console || target;
+      target = root.console = root.console || target;
     }
 
     // Patch properties, methods.
@@ -20927,7 +20931,7 @@ module.exports = require('./lib/React');
   var _console;
   SimpleConsole.prototype._getConsole = function () {
     if (typeof _console !== "undefined") { return _console; }
-    _console = window.console || null;
+    _console = root.console || null;
     return _console;
   };
 
@@ -20960,7 +20964,7 @@ module.exports = require('./lib/React');
     var mod = typeof exports === "object" ? exports : root;
     mod.SimpleConsole = SimpleConsole;
   }
-})(this);
+})();
 
 },{}]},{},[1])(1)
 });
