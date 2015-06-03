@@ -2,14 +2,13 @@
 
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var con = require('./util/console');
 
 function withErrorLogging(f) {
   return function() {
     try {
       f.apply(this, arguments);
     } catch(e) {
-      con.error(e.stack);
+      console.error(e.stack);
     }
   };
 };
@@ -43,7 +42,7 @@ class Store {
     this.mixin = {
       componentDidMount: function () {
         if (!this.storeDidChange) {
-          con.warn('A change handler is missing from a component with a Biff mixin. Notifications from Stores are not being handled.');
+          console.warn('A change handler is missing from a component with a Biff mixin. Notifications from Stores are not being handled.');
         }
         this.listener = (data)=> { this.isMounted() && this.storeDidChange(data); }
         this.errorListener = (data)=> { this.isMounted() && this.storeError && this.storeError(data); }
